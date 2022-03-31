@@ -5,6 +5,7 @@ public class TCPClient {
   public static void main(String[] args) {
     Socket s = null;
     boolean running = true;
+
     try {
       int serverPort = 50001;
       s = new Socket("127.0.0.1", serverPort);
@@ -29,12 +30,15 @@ public class TCPClient {
           out.write("REDY\n".getBytes());
           System.out.println("SENT: REDY");
 
+          int nextCpuCore = 0;
+
           while (running) {
             data = in.readLine();
             System.out.println("RCVD: " + data);
             if (data.startsWith("JOBN")) {
               String jobNo = data.split(" ")[2];
-              String scheduleMsg = "SCHD " + jobNo + " 4xlarge 0";
+              String scheduleMsg = "SCHD " + jobNo + " 4xlarge " + nextCpuCore;
+              nextCpuCore = incrementNextCore(nextCpuCore, 128);
               out.write((scheduleMsg + "\n").getBytes());
               System.out.println(scheduleMsg);
             } else if (data.equals("NONE")) {
@@ -66,6 +70,13 @@ public class TCPClient {
         }
       }
     }
+  }
+
+  private static int incrementNextCore(int core, int coreCount) {
+    if (core < coreCount-1) {
+      return core++;
+    }
+    return 0;
   }
 
   private static void debug(int num) {
