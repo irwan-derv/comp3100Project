@@ -21,8 +21,8 @@ public class TCPClient {
       System.out.println("RCVD: " + data);
 
       if (data.equals("OK")) {
-        out.write("AUTH test\n".getBytes());
-        System.out.println("SENT: AUTH test");
+        out.write("AUTH iderviskadic\n".getBytes());
+        System.out.println("SENT: AUTH iderviskadic");
 
         data = in.readLine();
         System.out.println("RCVD: " + data);
