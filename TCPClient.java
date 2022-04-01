@@ -37,8 +37,8 @@ public class TCPClient {
             System.out.println("RCVD: " + data);
             if (data.startsWith("JOBN")) {
               String jobNo = data.split(" ")[2];
-              String scheduleMsg = "SCHD " + jobNo + " 4xlarge " + nextCpuCore;
-              nextCpuCore = incrementNextCore(nextCpuCore, 128);
+              String scheduleMsg = "SCHD " + jobNo + " super-silk " + nextCpuCore;
+              nextCpuCore = incrementNextCore(nextCpuCore, 16);
               out.write((scheduleMsg + "\n").getBytes());
               System.out.println(scheduleMsg);
             } else if (data.equals("NONE")) {
