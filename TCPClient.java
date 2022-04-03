@@ -5,20 +5,26 @@ public class TCPClient {
   static BufferedReader in;
   static DataOutputStream out;
   static Socket s = null;
+  static int serverPort = 50000; // default server port
 
   static boolean loggingMode = false;
 
   public static void main(String[] args) {
     boolean running = true;
 
-    if (args.length > 0) {
-      if (args[0].equals("-l")) {
+    for (int i = 0; i < args.length; i++) {
+      if (args[i].equals("-l")) {
         loggingMode = true;
+      } else if (args[i].equals("-p")) {
+        try {
+          serverPort = Integer.parseInt(args[i+1]);
+        } catch(Exception e) {
+          System.out.println("Invalid port: Defaulting to 50000");
+        }
       }
     }
 
     try {
-      int serverPort = 50000; // default server port
       s = new Socket("127.0.0.1", serverPort);
       in = new BufferedReader(new InputStreamReader(s.getInputStream()));
       out = new DataOutputStream(s.getOutputStream());
