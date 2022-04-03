@@ -10,6 +10,7 @@ public class TCPClient {
   static boolean loggingMode = false;
 
   public static void main(String[] args) {
+    System.out.println("# Started TCPClient on port " + serverPort);
     boolean running = true;
 
     for (int i = 0; i < args.length; i++) {
