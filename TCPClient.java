@@ -24,7 +24,7 @@ public class TCPClient {
       out = new DataOutputStream(s.getOutputStream());
       String data;
 
-      performHandshake("iderviskadic"); // provide user to authenticate with
+      performHandshake(System.getProperty("user.name")); // provide user to authenticate with using logged in user
       sendMessage("REDY");
 
       String server = "";
