@@ -17,5 +17,7 @@ While the server is running the client can be started with `java TCPClient`.
 
 ## Student info
 Name: Irwan Derviskadic
+
 Student ID: 46476458
+
 Email: irwan.derviskadic@students.mq.edu.au
