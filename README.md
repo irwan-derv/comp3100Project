@@ -14,3 +14,8 @@ Simply run `./demoS1.sh -n TCPClient.class` to run through the test suite.
 A ds-server server must be started in newline mode with a config supplied before TCPClient is run. To do so you may start ds-server using `./ds-server -c <config-directory> -n`.
 
 While the server is running the client can be started with `java TCPClient`.
+
+## Student info
+Name: Irwan Derviskadic
+Student ID: 46476458
+Email: irwan.derviskadic@students.mq.edu.au
