@@ -1,0 +1,21 @@
+round robin:
+# actual simulation end time: 1324826, #jobs: 7990 (failed 0 times)
+# total #servers used: 20, avg util: 99.91% (ef. usage: 99.91%), total cost: $9701.90
+# avg waiting time: 402892, avg exec time: 3973, avg turnaround time: 406865
+
+
+first fit:
+# actual simulation end time: 352544, #jobs: 7990 (failed 0 times)
+# total #servers used: 200, avg util: 59.75% (ef. usage: 62.04%), total cost: $9088.66
+# avg waiting time: 15, avg exec time: 3973, avg turnaround time: 3988
+
+
+best fit:
+# actual simulation end time: 806831, #jobs: 7990 (failed 0 times)
+# total #servers used: 184, avg util: 61.28% (ef. usage: 62.95%), total cost: $8570.79
+# avg waiting time: 9568, avg exec time: 3973, avg turnaround time: 13541
+
+worst fit:
+# actual simulation end time: 10399946, #jobs: 7990 (failed 0 times)
+# total #servers used: 73, avg util: 67.38% (ef. usage: 87.68%), total cost: $10672.32
+# avg waiting time: 2482299, avg exec time: 3973, avg turnaround time: 2486272
