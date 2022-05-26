@@ -1,5 +1,6 @@
 import java.net.*;
 import java.io.*;
+import java.util.*;
 
 public class TCPClient2 {
   static BufferedReader in;
@@ -38,27 +39,11 @@ public class TCPClient2 {
       int maxServer = 0;
       int nextServer = 0;
 
-      // data = receiveMessage();
-      // if (data.startsWith("JOBN")) {
-      //   String jobNo = getJobNo(data);
-      //   String[] job = data.split(" ");
-
-      //   String[] serverInfo = getLargestServer(job[4], job[5], job[6]);
-      //   server = serverInfo[0];
-      //   maxServer = Integer.parseInt(serverInfo[1]);
-
-      //   scheduleJob(jobNo, server, nextServer);
-
-      //   if (maxServer != 0) {
-      //     nextServer++;
-      //   }
-      // }
-
       while (running) {
         data = receiveMessage();
         if (data.startsWith("JOBN")) {
-          String jobNo = getJobNo(data);
           String[] job = data.split(" ");
+          String jobNo = job[2];
 
           String[] serverInfo = getFirstServer(job[4], job[5], job[6]);
           scheduleJob(jobNo, serverInfo[0], nextServer);
@@ -108,11 +93,7 @@ public class TCPClient2 {
     }
     return data;
   }
-
-  private static String getJobNo(String job) {
-    return job.split(" ")[2];
-  }
-
+  
   private static void scheduleJob(String jobNo, String server, int nextServer) throws IOException {
     String scheduleMsg = "SCHD " + jobNo + " " + server + " " + nextServer;
     sendMessage(scheduleMsg);
@@ -174,7 +155,7 @@ public class TCPClient2 {
     return server;
   }
 
-  private static String[] getFirstServer(String threads, String memory, String disk) throws IOException {
+  private static String[][] getCapableServers(String threads, String memory, String disk) throws IOException {
     String data;
     String getsMessage = "GETS Capable " + threads + " " + memory + " " + disk;
     sendMessage(getsMessage);
@@ -184,14 +165,19 @@ public class TCPClient2 {
 
     sendMessage("OK");
 
-    int maxCores = 0;
-
-    String[] server = receiveMessage().split(" ");
-    for (int i = 0; i < serverCount-1; i++) {
-      receiveMessage().split(" ");
+    String[][] servers = new String[serverCount][9];
+    for (int i = 0; i < serverCount; i++) {
+      servers[i] = receiveMessage().split(" ");
     }
     sendMessage("OK");
     receiveMessage();
+
+    return servers;
+  }
+
+  private static String[] getFirstServer(String threads, String memory, String disk) throws IOException {
+    String[] server = getCapableServers(threads, memory, disk)[0];
+    System.out.println(Arrays.toString(server));
 
     return server;
   }
