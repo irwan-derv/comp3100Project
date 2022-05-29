@@ -156,13 +156,11 @@ public class TCPClient {
       if (currentRemainder >= 0 && Integer.parseInt(servers[i][7]) < 1) {
         return servers[i];
       }
-    }
-    int currentServer = servers.length -1;
-    while (servers[currentServer][4] == servers[servers.length-1][4]) {
-      if (Integer.parseInt(servers[currentServer][7]) < smallestQueueIdx) {
-        smallestQueueIdx = Integer.parseInt(servers[currentServer][7]);
+      int smallestQueue = Integer.parseInt(servers[smallestQueueIdx][7]);
+      int currentQueue = Integer.parseInt(servers[i][7]);
+      if (currentRemainder >= 0 && smallestQueue > currentQueue) {
+        smallestQueueIdx = i;
       }
-      currentServer--;
     }
 
     return servers[smallestQueueIdx];
