@@ -1,5 +1,6 @@
 import java.net.*;
 import java.io.*;
+import java.util.*;
 
 public class TCPClient {
   static BufferedReader in;
@@ -38,27 +39,14 @@ public class TCPClient {
       int maxServer = 0;
       int nextServer = 0;
 
-      data = receiveMessage();
-      if (data.startsWith("JOBN")) {
-        String jobNo = getJobNo(data);
-        String[] job = data.split(" ");
-
-        String[] serverInfo = getLargestServer(job[4], job[5], job[6]);
-        server = serverInfo[0];
-        maxServer = Integer.parseInt(serverInfo[1]);
-
-        scheduleJob(jobNo, server, nextServer);
-
-        if (maxServer != 0) {
-          nextServer++;
-        }
-      }
-
       while (running) {
         data = receiveMessage();
         if (data.startsWith("JOBN")) {
-          String jobNo = getJobNo(data);
-          scheduleJob(jobNo, server, nextServer);
+          String[] job = data.split(" ");
+          String jobNo = job[2];
+
+          String[] serverInfo = getFirstFit(job[4], job[5], job[6]);
+          scheduleJob(jobNo, serverInfo[0], serverInfo[1]);
 
           nextServer++;
           if (nextServer > maxServer) {
@@ -106,11 +94,7 @@ public class TCPClient {
     return data;
   }
 
-  private static String getJobNo(String job) {
-    return job.split(" ")[2];
-  }
-
-  private static void scheduleJob(String jobNo, String server, int nextServer) throws IOException {
+  private static void scheduleJob(String jobNo, String server, String nextServer) throws IOException {
     String scheduleMsg = "SCHD " + jobNo + " " + server + " " + nextServer;
     sendMessage(scheduleMsg);
   }
@@ -143,7 +127,7 @@ public class TCPClient {
     }
   }
 
-  private static String[] getLargestServer(String threads, String memory, String disk) throws IOException {
+  private static String[][] getCapableServers(String threads, String memory, String disk) throws IOException {
     String data;
     String getsMessage = "GETS Capable " + threads + " " + memory + " " + disk;
     sendMessage(getsMessage);
@@ -153,21 +137,34 @@ public class TCPClient {
 
     sendMessage("OK");
 
-    String server[] = new String[0];
-    int maxCores = 0;
-
+    String[][] servers = new String[serverCount][9];
     for (int i = 0; i < serverCount; i++) {
-      String[] serverInfo = receiveMessage().split(" ");
-      if (Integer.parseInt(serverInfo[4]) > maxCores) {
-        server = serverInfo;
-        maxCores = Integer.parseInt(serverInfo[4]);
-      } else if (serverInfo[0].equals(server[0])) {
-        server = serverInfo;
-      }
+      servers[i] = receiveMessage().split(" ");
     }
     sendMessage("OK");
     receiveMessage();
 
-    return server;
+    return servers;
+  }
+
+  private static String[] getFirstFit(String threads, String memory, String disk) throws IOException {
+    String[][] servers = getCapableServers(threads, memory, disk);
+    int smallestQueueIdx = servers.length -1;
+
+    for (int i = 0; i < servers.length; i++) {
+      int currentRemainder = Integer.parseInt(servers[i][4]) - Integer.parseInt(threads);
+      if (currentRemainder >= 0 && Integer.parseInt(servers[i][7]) < 1) {
+        return servers[i];
+      }
+    }
+    int currentServer = servers.length -1;
+    while (servers[currentServer][4] == servers[servers.length-1][4]) {
+      if (Integer.parseInt(servers[currentServer][7]) < smallestQueueIdx) {
+        smallestQueueIdx = Integer.parseInt(servers[currentServer][7]);
+      }
+      currentServer--;
+    }
+
+    return servers[smallestQueueIdx];
   }
 }
