@@ -12,6 +12,7 @@ Simply run `./demoS1.sh -n TCPClient.class` to run through the test suite.
 
 ### Running the client using stage2-test
 For x86 systems run `/stage2-test-x86 "java TCPClient.java" -o tt -n`
+
 For Apple silicon systems run `/stage2-test-aarch64 "java TCPClient.java" -o tt -n`
 
 ### Running the client with a server
