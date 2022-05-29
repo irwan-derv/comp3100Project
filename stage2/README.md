@@ -11,9 +11,9 @@ In order to run the client in any capacity, it must first be compiled using `jav
 Simply run `./demoS1.sh -n TCPClient.class` to run through the test suite.
 
 ### Running the client using stage2-test
-For x86 systems run `/stage2-test-x86 "java TCPClient.java" -o tt -n`
+For x86 systems run `./stage2-test-x86 "java TCPClient.java" -o tt -n`
 
-For Apple silicon systems run `/stage2-test-aarch64 "java TCPClient.java" -o tt -n`
+For Apple silicon systems run `./stage2-test-aarch64 "java TCPClient.java" -o tt -n`
 
 ### Running the client with a server
 A ds-server server must be started in newline mode with a config supplied before TCPClient is run. To do so you may start ds-server using `./ds-server -c <config-directory> -n`.
